@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PasswordValidatorShould {
+    public static final String ERROR = "Error";
     private final PasswordValidator passwordValidator = new PasswordValidator();
     @Mock
     ValidationRule validation;
@@ -31,5 +32,17 @@ public class PasswordValidatorShould {
 
         assertEquals(Arrays.asList(error), passwordValidator.getProblemsWith(password));
         verify(validation).isValid(eq(password));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1bC_efgh,true",
+            "abcsadsa,false",
+    })
+    public void recognize_as_valid_passwords_without_errors(String password, boolean isValid) {
+        when(validation.isValid(anyString())).thenReturn(isValid);
+        doAnswer(invocation -> ERROR).when(validation).getErrorMessage();
+
+        assertEquals(isValid, passwordValidator.isValid(password));
     }
 }
