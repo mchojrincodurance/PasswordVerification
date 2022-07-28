@@ -1,7 +1,13 @@
 package com.codurance.password;
 
 public class MinimumLengthValidation extends ValidationRule {
-    public MinimumLengthValidation(int i) {
-        super();
+    private final int minLength;
+
+    public MinimumLengthValidation(int minLength) {
+        this.minLength = minLength;
+    }
+
+    public boolean isValid(String s) {
+        return s.length() >= minLength;
     }
 }
