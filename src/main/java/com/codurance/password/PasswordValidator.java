@@ -21,6 +21,14 @@ public class PasswordValidator {
     }
 
     public ArrayList<String> getProblemsWith(String password) {
-        return new ArrayList<String>();
+        ArrayList<String> errors = new ArrayList<String>();
+
+        for( ValidationRule rule : validationRules ) {
+            if (!rule.isValid(password)) {
+                errors.add(rule.getErrorMessage());
+            }
+        }
+
+        return errors;
     }
 }
