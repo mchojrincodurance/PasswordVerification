@@ -10,11 +10,11 @@ public class PasswordValidatorShould {
     @ParameterizedTest
     @CsvSource({
             "1bC_efgh, true",
-            "1_34567, false",
-            "a_cdefgh, false",
-            "A_CDEFGH, false",
-            "a_cDefgh, false",
-            "aBc1efgh, false",
+            "1bC_efg, false",
+            "1bc_efgh, false",
+            "1BC_EFGH, false",
+            "AbC_efgh, false",
+            "1bCdefgh, false",
     })
 
     public void detect_incorrect_passwords(String password, boolean isValid) {

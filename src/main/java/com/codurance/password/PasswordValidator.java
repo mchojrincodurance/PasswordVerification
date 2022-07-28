@@ -2,13 +2,23 @@ package com.codurance.password;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.ArrayList;
+
 public class PasswordValidator {
+    private ArrayList<ValidationRule> validationRules = new ArrayList<>();
+
     public boolean isValid(String password) {
         return containsACapitalLetter(password) &&
                 containsALowerCaseLetter(password) &&
                 containsANumber(password) &&
-                containsAnUnderscore(password)
+                containsAnUnderscore(password) &&
+                hasAtLeastChars(password,8)
                 ;
+    }
+
+    @Contract(pure = true)
+    private boolean hasAtLeastChars(String password, int quantity) {
+        return password.length() >= quantity;
     }
 
     @Contract(pure = true)
@@ -31,6 +41,6 @@ public class PasswordValidator {
     }
 
     public void addValidationRule(ValidationRule validationRule) {
-        throw new UnsupportedOperationException("com.codurance.password.PasswordValidator::addValidationRule not implemented yet");
+        validationRules.add(validationRule);
     }
 }
