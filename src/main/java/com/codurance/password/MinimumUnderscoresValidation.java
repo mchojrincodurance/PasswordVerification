@@ -1,7 +1,16 @@
 package com.codurance.password;
 
 public class MinimumUnderscoresValidation extends ValidationRule {
-    public MinimumUnderscoresValidation(int i) {
-        super();
+
+    public static final char UNDERSCORE = '_';
+    private final long minUnderscores;
+
+    public MinimumUnderscoresValidation(int minUnderscores) {
+        this.minUnderscores = minUnderscores;
+    }
+
+    @Override
+    public boolean isValid(String password) {
+        return password.chars().filter(c -> c == UNDERSCORE).count() >= minUnderscores;
     }
 }
