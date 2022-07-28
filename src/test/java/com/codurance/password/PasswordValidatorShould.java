@@ -41,7 +41,12 @@ public class PasswordValidatorShould {
     })
     public void recognize_as_valid_passwords_without_errors(String password, boolean isValid) {
         when(validation.isValid(anyString())).thenReturn(isValid);
-        doAnswer(invocation -> ERROR).when(validation).getErrorMessage();
+
+        if (!isValid) {
+            doAnswer(invocation -> ERROR).when(validation).getErrorMessage();
+        }
+
+        passwordValidator.addValidationRule(validation);
 
         assertEquals(isValid, passwordValidator.isValid(password));
     }

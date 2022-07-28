@@ -6,14 +6,7 @@ public class PasswordValidator {
     private final ArrayList<ValidationRule> validationRules = new ArrayList<>();
 
     public boolean isValid(String password) {
-        for (ValidationRule rule : validationRules) {
-            if ( !rule.isValid(password) ) {
-
-                return false;
-            }
-        }
-
-        return true;
+        return getProblemsWith(password).isEmpty();
     }
 
     public void addValidationRule(ValidationRule validationRule) {
