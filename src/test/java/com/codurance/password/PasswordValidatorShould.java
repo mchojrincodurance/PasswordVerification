@@ -1,4 +1,5 @@
-import com.codurance.password.PasswordValidator;
+package com.codurance.password;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 

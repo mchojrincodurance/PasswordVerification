@@ -19,4 +19,8 @@ public class PasswordValidator {
     public void addValidationRule(ValidationRule validationRule) {
         validationRules.add(validationRule);
     }
+
+    public ArrayList<String> getProblemsWith(String password) {
+        return new ArrayList<String>();
+    }
 }
