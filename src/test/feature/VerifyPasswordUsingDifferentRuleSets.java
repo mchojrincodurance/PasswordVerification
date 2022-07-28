@@ -1,7 +1,11 @@
 import com.codurance.password.*;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VerifyPasswordUsingDifferentRuleSets {
     /**
@@ -14,8 +18,16 @@ public class VerifyPasswordUsingDifferentRuleSets {
      * When I ask whether my password is valid
      * Then I should get false as a result
      */
-    @Test
-    public void should_use_the_first_ruleset_for_password_validation() {
+    @ParameterizedTest
+    @CsvSource({
+            "1bC_efgh,",
+            "1bc_efg,Minimum length error",
+            "1bc_efgh,Minimum capital letters error",
+            "1BC_EFGH,Minimum lower case letters error",
+            "abC_efgh,Minimum numbers error",
+            "1bCdefgh,Minimum underscores error"
+    })
+    public void should_use_the_first_ruleset_for_password_validation(String password, String expectedError) {
         PasswordValidator passwordValidator = new PasswordValidator();
         passwordValidator.addValidationRule(new MinimumLengthValidation(8));
         passwordValidator.addValidationRule(new MinimumCapitalLettersValidation(1));
@@ -23,12 +35,9 @@ public class VerifyPasswordUsingDifferentRuleSets {
         passwordValidator.addValidationRule(new MinimumNumbersValidation(1));
         passwordValidator.addValidationRule(new MinimumUnderscoresValidation(1));
 
-        assertTrue(passwordValidator.isValid("1bC_efgh"));
-        assertFalse(passwordValidator.isValid("1bC_efg"));
-        assertFalse(passwordValidator.isValid("1bc_efgh"));
-        assertFalse(passwordValidator.isValid("1BC_EFGH"));
-        assertFalse(passwordValidator.isValid("abC_efgh"));
-        assertFalse(passwordValidator.isValid("1bCdefgh"));
+        ArrayList<String> problems = passwordValidator.getProblemsWith(password);
+        assertEquals(expectedError == null ? 0 : 1, problems.size());
+        assertTrue(expectedError == null || problems.contains(expectedError));
     }
 
     /**
@@ -41,15 +50,24 @@ public class VerifyPasswordUsingDifferentRuleSets {
      * When I ask whether my password is valid
      * Then I should get false as a result
      */
-    @Test
-    public void should_use_the_second_ruleset_for_password_validation() {
+    @ParameterizedTest
+    @CsvSource({
+            "1bC_ef,",
+            "1bc_e,Minimum length error",
+            "1bc_efgh,Minimum capital letters error",
+            "1BC_EFGH,Minimum lower case letters error",
+            "abC_efgh,Minimum numbers error",
+    })
+    public void should_use_the_second_ruleset_for_password_validation(String password, String expectedError) {
         PasswordValidator passwordValidator = new PasswordValidator();
         passwordValidator.addValidationRule(new MinimumLengthValidation(6));
         passwordValidator.addValidationRule(new MinimumCapitalLettersValidation(1));
         passwordValidator.addValidationRule(new MinimumLowercaseLettersValidation(1));
         passwordValidator.addValidationRule(new MinimumNumbersValidation(1));
 
-        assertTrue(passwordValidator.isValid("1bCef6"));
+        ArrayList<String> problems = passwordValidator.getProblemsWith(password);
+        assertEquals(expectedError == null ? 0 : 1, problems.size());
+        assertTrue(expectedError == null || problems.contains(expectedError));
     }
 
     /**
@@ -60,17 +78,23 @@ public class VerifyPasswordUsingDifferentRuleSets {
      * When I ask whether my password is valid
      * Then I should get false as a result
      */
-    @Test
-    public void should_use_the_third_ruleset_for_password_validation() {
+    @ParameterizedTest
+    @CsvSource({
+            "Ab_4567890123456,",
+            "Ab_45678901234,Minimum length error",
+            "bb_4567890123456,Minimum capital letters error",
+            "AB_4567890123456,Minimum lower case letters error",
+            "Abc4567890123456,Minimum underscores error",
+    })
+    public void should_use_the_third_ruleset_for_password_validation(String password, String expectedError) {
         PasswordValidator passwordValidator = new PasswordValidator();
         passwordValidator.addValidationRule(new MinimumLengthValidation(16));
         passwordValidator.addValidationRule(new MinimumCapitalLettersValidation(1));
         passwordValidator.addValidationRule(new MinimumLowercaseLettersValidation(1));
         passwordValidator.addValidationRule(new MinimumUnderscoresValidation(1));
 
-        assertTrue(passwordValidator.isValid("Ab_4567890123456"));
-        assertFalse(passwordValidator.isValid("ab_456789012345"));
-        assertFalse(passwordValidator.isValid("AB_4567890123456"));
-        assertFalse(passwordValidator.isValid("Abc4567890123456"));
+        ArrayList<String> problems = passwordValidator.getProblemsWith(password);
+        assertEquals(expectedError == null ? 0 : 1, problems.size());
+        assertTrue(expectedError == null || problems.contains(expectedError));
     }
 }
