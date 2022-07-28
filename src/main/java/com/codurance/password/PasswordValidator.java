@@ -29,4 +29,8 @@ public class PasswordValidator {
     private boolean containsACapitalLetter(String password) {
         return password.matches(".*[A-Z].*");
     }
+
+    public void addValidationRule(ValidationRule validationRule) {
+        throw new UnsupportedOperationException("com.codurance.password.PasswordValidator::addValidationRule not implemented yet");
+    }
 }

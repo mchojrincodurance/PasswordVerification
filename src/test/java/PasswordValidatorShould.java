@@ -9,8 +9,8 @@ public class PasswordValidatorShould {
 
     @ParameterizedTest
     @CsvSource({
-            "1_34567, false",
             "1bC_efgh, true",
+            "1_34567, false",
             "a_cdefgh, false",
             "A_CDEFGH, false",
             "a_cDefgh, false",
