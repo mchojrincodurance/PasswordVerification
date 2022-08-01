@@ -21,7 +21,7 @@ public class VerifyPasswordUsingDifferentRuleSets {
     @ParameterizedTest
     @CsvSource({
             "1bC_efgh,",
-            "1bc_efg,Minimum length error",
+            "1bc_eFg,Minimum length error",
             "1bc_efgh,Minimum capital letters error",
             "1BC_EFGH,Minimum lower case letters error",
             "abC_efgh,Minimum numbers error",
@@ -53,7 +53,7 @@ public class VerifyPasswordUsingDifferentRuleSets {
     @ParameterizedTest
     @CsvSource({
             "1bC_ef,",
-            "1bc_e,Minimum length error",
+            "1bc_E,Minimum length error",
             "1bc_efgh,Minimum capital letters error",
             "1BC_EFGH,Minimum lower case letters error",
             "abC_efgh,Minimum numbers error",
