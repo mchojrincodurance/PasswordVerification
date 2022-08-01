@@ -50,4 +50,20 @@ public class PasswordValidatorShould {
 
         assertEquals(isValid, passwordValidator.isValid(password));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1bC_efgh,true",
+            "abcsadsa,false",
+    })
+    public void allow_at_most_N_failed_validations (String password, boolean isValid) {
+        when(validation.isValid(anyString())).thenReturn(isValid);
+        ValidationRule failedValidation = mock(ValidationRule.class);
+        when(failedValidation.isValid(anyString())).thenReturn(false);
+        passwordValidator.allowFailedValidations(1);
+        passwordValidator.addValidationRule(validation);
+        passwordValidator.addValidationRule(failedValidation);
+
+        assertEquals(isValid, passwordValidator.isValid(password));
+    }
 }
