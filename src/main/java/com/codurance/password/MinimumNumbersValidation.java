@@ -4,6 +4,7 @@ public class MinimumNumbersValidation extends ValidationRule {
     private final int minNumbers;
 
     public MinimumNumbersValidation(int minNumbers) {
+        super("Minimum numbers error");
         this.minNumbers = minNumbers;
     }
 

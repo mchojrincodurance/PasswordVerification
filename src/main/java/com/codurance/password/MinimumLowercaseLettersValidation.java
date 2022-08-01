@@ -4,6 +4,7 @@ public class MinimumLowercaseLettersValidation extends ValidationRule {
     private final int minLowercaseLetters;
 
     public MinimumLowercaseLettersValidation(int minLowercaseLetters) {
+        super("Minimum lower case letters error");
         this.minLowercaseLetters = minLowercaseLetters;
     }
 

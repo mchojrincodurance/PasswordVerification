@@ -1,7 +1,11 @@
 package com.codurance.password;
 
 public abstract class ValidationRule {
-    private String errorMessage;
+    private final String errorMessage;
+
+    public ValidationRule(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
     public abstract boolean isValid(String password);
 

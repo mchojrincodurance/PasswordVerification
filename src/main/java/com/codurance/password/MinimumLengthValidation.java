@@ -4,6 +4,7 @@ public class MinimumLengthValidation extends ValidationRule {
     private final int minLength;
 
     public MinimumLengthValidation(int minLength) {
+        super("Minimum length error");
         this.minLength = minLength;
     }
 

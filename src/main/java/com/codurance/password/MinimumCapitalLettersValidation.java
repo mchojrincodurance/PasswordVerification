@@ -4,6 +4,7 @@ public class MinimumCapitalLettersValidation extends ValidationRule {
     private final int minCapitalLetters;
 
     public MinimumCapitalLettersValidation(int minCapitalLetters) {
+        super("Minimum capital letters error");
         this.minCapitalLetters = minCapitalLetters;
     }
 

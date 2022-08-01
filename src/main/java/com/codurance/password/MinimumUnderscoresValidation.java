@@ -6,6 +6,7 @@ public class MinimumUnderscoresValidation extends ValidationRule {
     private final long minUnderscores;
 
     public MinimumUnderscoresValidation(int minUnderscores) {
+        super("Minimum underscores error");
         this.minUnderscores = minUnderscores;
     }
 
