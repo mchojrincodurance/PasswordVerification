@@ -1,4 +1,5 @@
 import com.codurance.password.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -8,6 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VerifyPasswordUsingDifferentRuleSets {
+
+    private PasswordValidator passwordValidator;
+
+    @BeforeEach
+    void setUp() {
+        passwordValidator = new PasswordValidator();
+    }
+
     /**
      * Given the password must have more than 8 characters in order to be valid
      * And the password must contain a capital letter in order to be valid
@@ -87,7 +96,6 @@ public class VerifyPasswordUsingDifferentRuleSets {
             "Abc4567890123456,Minimum underscores error",
     })
     public void should_use_the_third_ruleset_for_password_validation(String password, String expectedError) {
-        PasswordValidator passwordValidator = new PasswordValidator();
         passwordValidator.addValidationRule(new MinimumLengthValidation(16));
         passwordValidator.addValidationRule(new MinimumCapitalLettersValidation(1));
         passwordValidator.addValidationRule(new MinimumLowercaseLettersValidation(1));
@@ -96,5 +104,26 @@ public class VerifyPasswordUsingDifferentRuleSets {
         ArrayList<String> problems = passwordValidator.getProblemsWith(password);
         assertEquals(expectedError == null ? 0 : 1, problems.size());
         assertTrue(expectedError == null || problems.contains(expectedError));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Ab_45678,true",
+            "Ab_4567,true",
+            "ab_45678,true",
+            "AB345678,true",
+            "abc45678,false",
+            "a_45678,false",
+            "A_cdef,false",
+            "AB4567,false",
+    })
+    public void should_allow_some_validations_to_fail(String password, boolean isValid) {
+        passwordValidator.addValidationRule(new MinimumLengthValidation(8));
+        passwordValidator.addValidationRule(new MinimumCapitalLettersValidation(1));
+        passwordValidator.addValidationRule(new MinimumUnderscoresValidation(1));
+        passwordValidator.addValidationRule(new MinimumNumbersValidation(1));
+        passwordValidator.allowFailedValidations(1);
+
+        assertEquals(isValid, passwordValidator.isValid(password));
     }
 }
